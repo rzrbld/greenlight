@@ -95,7 +95,8 @@ def main():
         wait_path(run/'bus', bus)
         compositor = start([RUNTIME/'bin/weston', '--backend=drm-backend.so', '--shell=kiosk-shell.so', '--config='+str(config), '--socket=greenlight-wayland', '--log='+str(CACHE/'weston.log')], 'desktop')
         wait_path(run/'greenlight-wayland', compositor)
-        args = [ROOT/'electron/greenlight-duo', '--no-sandbox', '--ozone-platform=wayland', '--use-gl=angle', '--use-angle=gles', '--alsa-output-device=default', '--alsa-input-device=default', '--fullscreen']
+        # Keep video inside Chromium's Adreno compositor instead of delegated Wayland overlays.
+        args = [ROOT/'electron/greenlight-duo', '--no-sandbox', '--ozone-platform=wayland', '--use-gl=angle', '--use-angle=gles', '--alsa-output-device=default', '--alsa-input-device=default', '--fullscreen', '--disable-features=WaylandOverlayDelegation']
         if os.environ.get('GREENLIGHT_DUO_DIAGNOSTICS') == '1':
             args += ['--remote-debugging-address=127.0.0.1', '--remote-debugging-port=9225']
         app = start(args, 'app')

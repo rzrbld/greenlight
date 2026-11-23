@@ -1,12 +1,16 @@
-First Duo Lite preview of Greenlight, packaged as an independent Slopetanium
-app for BananaOS. Includes ARM64 Electron, an app-owned Wayland runtime, native
-OS Adreno rendering, landscape top-screen output, controller menu navigation
-and inline Microsoft device-code sign-in. Remote Play and cloud paths are
-retained from upstream Greenlight v2.4.2.
+Duo.2 keeps video inside Chromium's GPU compositor instead of delegating
+Wayland overlays. This addresses the display path implicated by frozen video,
+rising shared memory and blocked graphics-buffer cleanup in the first preview.
+Adreno GPU compositing remains enabled.
 
-Startup and controller mapping have been tested on hardware. Account-backed
-streaming, stream audio and hardware video decoding remain unverified; this is
-a bring-up preview, not a claim of full streaming compatibility.
+A local 720p60 H.264 test presented roughly 56–60 FPS after startup, used about
+115 MB of shared memory and returned cleanly to the launcher. Physical output
+and actual Xbox streaming still need user verification; this remains a preview.
 
-Install the Linux ARM64 ZIP through Slopetanium. The sources archive contains
-the fork snapshot and corresponding bundled dependency source packages.
+For top-screen touch, use BananaOS Duo Lite Alpha46 or newer. That firmware
+initializes both touch controllers automatically and assigns their displays.
+Greenlight itself remains independently installed and updated by Slopetanium.
+
+Install the Linux ARM64 ZIP. The sources archive contains the fork snapshot
+and corresponding bundled dependency sources. Settings and sign-in stay outside
+the replaceable app directory.

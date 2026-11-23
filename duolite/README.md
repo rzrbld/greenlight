@@ -39,8 +39,16 @@ Adreno FD610 rendering through ANGLE/GLES, and measured controller button
 normalization have been checked. The initial upside-down display transform
 has been corrected; physical confirmation is still pending.
 
-Actual Remote Play/cloud streaming, stream audio, analog trigger behavior and
-stream rumble still require an account-backed device test. Hardware video
+An initial real stream exposed a frozen physical image despite advancing
+receiver/decode counters, rising shared memory, and a graphics-fence wait during
+cleanup; one attempt also exhausted memory. Duo.2 disables delegated Wayland
+overlays while keeping Adreno compositing. A local 720p60 H.264 test presented
+roughly 56–60 FPS after startup, held shared memory near 115 MB and returned
+cleanly to the launcher. The same local test with software compositing presented
+about 24 FPS. This workaround still needs a real-stream physical check.
+
+Reliable Remote Play/cloud streaming, stream audio, analog trigger behavior and
+stream rumble still require account-backed device tests. Hardware video
 decoding is **not verified**: Chromium reports no decoding profiles in the
 current probe. A working GPU renderer does not establish video decode support.
 
