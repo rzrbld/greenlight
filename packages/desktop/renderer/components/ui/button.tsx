@@ -33,7 +33,7 @@ function Button({
                 paddingLeft: 35,
                 // height: 41,
             }:{}} onFocus={ (e) => {
-                e.target.blur() 
+                if(!window.Greenlight?.isDuoLite?.()) e.target.blur()
             }}>{label}</button>
         </React.Fragment>
     )

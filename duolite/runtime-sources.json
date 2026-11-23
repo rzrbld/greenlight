@@ -1,0 +1,7 @@
+{
+  "electron": "42.0.1",
+  "chromium": "148.0.7778.97",
+  "ffmpeg_revision": "b5e18fb9da84e26ceef30d4e4886696bf59337c0",
+  "electron_deps": "https://github.com/electron/electron/blob/v42.0.1/DEPS",
+  "chromium_deps": "https://chromium.googlesource.com/chromium/src/+/148.0.7778.97/DEPS"
+}

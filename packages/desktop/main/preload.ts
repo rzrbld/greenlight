@@ -3,6 +3,8 @@ import pkg from '../package.json'
 
 export const Preload = {
 
+    isDuoLite(){ return process.env.GREENLIGHT_DUOLITE === '1' },
+
     send(channel:string, action:string, data = {}){
         return new Promise((resolve, reject) => {
             const requestId = Math.round(Math.random()*1000)

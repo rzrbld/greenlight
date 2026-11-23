@@ -4,3 +4,7 @@ next-env.d.ts
 packages/docs/out
 packages/docs/.source
 dist/
+# Duo app build outputs, never profiles or credentials.
+duolite/build/
+*.tsbuildinfo
+__pycache__/

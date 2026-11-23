@@ -1,0 +1,70 @@
+name: Greenlight Duo Linux ARM64
+on:
+  pull_request:
+    branches: [duolite]
+  push:
+    tags: ['v*-duo.*']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  app:
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+      - name: Enable locked Yarn
+        run: corepack enable && corepack prepare yarn@1.22.22 --activate
+      - name: Install pinned app dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+      - name: Controller and source checks
+        run: |
+          node --experimental-strip-types duolite/test-gamepad.mjs
+          python3 -m py_compile duolite/*.py
+          bash -n duolite/Greenlight.sh
+      - name: Compile app and ARM64 Electron payload
+        working-directory: packages/desktop
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+        run: |
+          ../../node_modules/.bin/nextron build --no-pack
+          ../../node_modules/.bin/electron-builder --linux dir --arm64 --publish never --config ../../duolite/electron-builder.yml
+      - name: Build app-owned desktop runtime
+        run: |
+          docker build -t greenlight-duo-runtime:ci -f duolite/Dockerfile.runtime .
+          docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/app" greenlight-duo-runtime:ci python3 /app/duolite/extract-runtime.py --electron /app/duolite/build/electron/linux-arm64-unpacked --output /app/duolite/build/runtime
+      - name: Package and verify Slopetanium app
+        run: |
+          python3 duolite/package.py
+          python3 duolite/test-package.py duolite/build/Greenlight-Duo-*-linux-arm64.zip
+      - name: Collect corresponding dependency sources
+        if: github.event_name != 'pull_request'
+        run: |
+          mkdir -p duolite/build/sources
+          docker run --rm -v "$PWD:/app" greenlight-duo-runtime:ci python3 /app/duolite/download-runtime-sources.py /app/duolite/build/runtime/manifest.json /app/duolite/build/sources/debian
+          python3 duolite/make-sources.py
+      - name: Verify release version and checksums
+        run: |
+          version=$(node -p "require('./packages/desktop/package.json').version")
+          if [ "$GITHUB_REF_TYPE" = tag ]; then test "$GITHUB_REF_NAME" = "v$version"; fi
+          cd duolite/build
+          sha256sum Greenlight-Duo-*.zip Greenlight-Duo-*-sources.tar.gz > SHA256SUMS
+        if: github.event_name != 'pull_request'
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: greenlight-duo-linux-arm64
+          path: |
+            duolite/build/Greenlight-Duo-*.zip
+            duolite/build/Greenlight-Duo-*-sources.tar.gz
+            duolite/build/SHA256SUMS
+          if-no-files-found: error
+      - name: Publish CI-built app release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" duolite/build/Greenlight-Duo-*.zip duolite/build/Greenlight-Duo-*-sources.tar.gz duolite/build/SHA256SUMS --prerelease --title "Greenlight Duo $GITHUB_REF_NAME" --notes-file duolite/RELEASE-NOTES.md

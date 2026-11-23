@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 
 interface AuthProps {
   signedIn: boolean;
+  deviceCode?: {code:string;url:string} | null;
   gamertag?: string;
   gamerpic?: string;
   gamerscore?: string;
@@ -18,6 +19,7 @@ interface AuthProps {
 
 function Auth({
     signedIn = false,
+    deviceCode = null,
     gamertag,
     gamerpic,
     gamerscore,
@@ -46,7 +48,7 @@ function Auth({
             <div id="component_auth">
 
                 <div id="component_auth_modal">
-                    { isLoading === false ?
+                    { deviceCode ? <Card><h1>Sign in on your phone or computer</h1><p>Open {deviceCode.url}</p><p style={{fontSize:48,letterSpacing:6}}>{deviceCode.code}</p><p>Greenlight will continue automatically.</p></Card> : isLoading === false ?
                         <Card>
                             {signedIn === true ? (<div className="component_auth_profile_container">
                                 <div className="component_auth_profile_gamerpic">

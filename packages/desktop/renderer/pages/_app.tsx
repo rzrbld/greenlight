@@ -1,4 +1,5 @@
 import '../styles.css'
+import { installDuoNavigation } from '../../../../duolite/controller'
 
 import React from 'react'
 import Head from 'next/head'
@@ -22,6 +23,13 @@ import {
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
     const router = useRouter()
+    const [deviceCode, setDeviceCode] = React.useState(null)
+    React.useEffect(() => {
+        if(window.Greenlight?.isDuoLite?.()) {
+            document.documentElement.classList.add('duolite')
+            return installDuoNavigation(() => { Ipc.send('app','quit') })
+        }
+    }, [])
     const queryClient = new QueryClient()
 
     const [loggedIn, setLoginState] = React.useState(false)
@@ -48,9 +56,9 @@ export default function MyApp({ Component, pageProps }) {
         })
 
         const authInterval = setInterval(() => {
-            console.log('Requesting AuthState...')
+            // Poll state without logging account/device-code details.
             Ipc.send('app', 'getAuthState').then((args) => {
-                console.log('Received AuthState:', args)
+                setDeviceCode(args.deviceCode || null)
 
                 if(args.isAuthenticating === true){
                     setIsLoading(true)
@@ -128,7 +136,7 @@ export default function MyApp({ Component, pageProps }) {
     } else {
         appBody = (
             <React.Fragment>
-                <Auth signedIn={ prevUserState.signedIn} gamertag={ prevUserState.gamertag } gamerpic={ prevUserState.gamerpic } gamerscore={ prevUserState.gamerscore } isLoading={ isLoading } />
+                <Auth deviceCode={deviceCode} signedIn={ prevUserState.signedIn} gamertag={ prevUserState.gamertag } gamerpic={ prevUserState.gamerpic } gamerscore={ prevUserState.gamerscore } isLoading={ isLoading } />
             </React.Fragment>)
     }
 

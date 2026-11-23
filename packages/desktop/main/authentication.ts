@@ -13,6 +13,7 @@ export default class Authentication {
     _msal:Msal
 
     _authWindow
+    _deviceCode: {code:string;url:string} | null = null
     _authCallback
 
     _isAuthenticating:boolean = false
@@ -122,7 +123,8 @@ export default class Authentication {
         this._msal.doDeviceCodeAuth().then((data) => {
             this._application.log('authenticationV2', '[startAuthflow()] Starting devicecode auth:', data)
 
-            dialog.showMessageBox({
+            this._deviceCode = {code:data.user_code,url:data.verification_uri || 'https://microsoft.com/link'}
+            if(process.env.GREENLIGHT_DUOLITE !== '1') dialog.showMessageBox({
                 message: data.message+' Click OK to continue after entering code.',
                 type: 'info',
             })
@@ -132,12 +134,14 @@ export default class Authentication {
             this._msal.doPollForDeviceCodeAuth(data.device_code).then((token) => {
                 this._application.log('authenticationV2', '[startAuthflow()] Devicecode authentication successful:', token)
 
+                this._deviceCode = null
                 this.getTokens()
 
             }).catch((error) => {
                 this._application.log('authenticationV2', '[startAuthflow()] Error during devicecode polling auth:', error)
                 dialog.showErrorBox('Error', 'Failed to perform MSAL authentixation: ' + JSON.stringify(error))
 
+                this._deviceCode = null
                 this._isAuthenticating = false
             })
 

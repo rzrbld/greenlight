@@ -11,6 +11,15 @@ import xboxWebApi from 'xbox-webapi'
 import xCloudApi from './helpers/xcloudapi'
 
 import pkg from '../package.json'
+import fs from 'node:fs'
+import path from 'node:path'
+
+if (process.env.GREENLIGHT_DUOLITE === '1') {
+    const profile = path.join(process.env.XDG_CONFIG_HOME || '/data/home/.config', 'greenlight-duo')
+    fs.mkdirSync(profile, {recursive:true})
+    ElectronApp.setPath('userData', profile)
+}
+
 
 import i18n from 'i18next';
 
@@ -70,6 +79,9 @@ export default class Application {
     }
 
     log(namespace = 'application', ...args){
+        if (process.env.GREENLIGHT_DUOLITE === '1' && /auth|token/i.test(namespace)) {
+            this._log.extend(namespace)(args[0]); return
+        }
         this._log.extend(namespace)(...args)
     }
 
@@ -210,8 +222,12 @@ export default class Application {
         this.log('electron', __filename+'[openMainWindow()] Creating new main window')
 
         const windowOptions:any = {
-            title: 'Greenlight',
+            title: process.env.GREENLIGHT_DUOLITE === '1' ? 'Greenlight Duo' : 'Greenlight',
             backgroundColor: 'rgb(26, 27, 30)',
+        }
+        if(process.env.GREENLIGHT_DUOLITE === '1') {
+            windowOptions.fullscreen = true
+            windowOptions.autoHideMenuBar = true
         }
         if(this._startupFlags.fullscreen === true){
             windowOptions.fullscreen = true

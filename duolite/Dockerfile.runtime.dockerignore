@@ -1,0 +1,2 @@
+# The runtime image installs Debian packages; no app source is copied into it.
+**

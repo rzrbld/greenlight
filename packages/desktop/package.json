@@ -2,12 +2,12 @@
   "private": true,
   "name": "greenlight-desktop",
   "description": "Greenlight is a streaming application for Xbox and xCloud",
-  "version": "2.4.2",
+  "version": "2.4.2-duo.1",
   "author": "UnknownSKL <info+github@jimkroon.nl>",
   "main": "app/background.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/unknownskl/greenlight.git"
+    "url": "git+https://github.com/rzrbld/greenlight.git"
   },
   "scripts": {
     "dev": "DEBUG=greenlight:* nextron",
@@ -64,5 +64,6 @@
     "react-dom": "^19.2.6",
     "typescript": "^5.9.3"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "productName": "Greenlight Duo"
 }

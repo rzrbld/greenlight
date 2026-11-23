@@ -159,3 +159,6 @@ input.text:focus {
         transform: rotate(360deg);
     }
 }
+/* Duo Lite: visible controller focus without changing stream input. */
+.duolite :is(button,a,input,select,[role="button"]):focus { outline:3px solid #58d68d !important; outline-offset:3px; }
+.duolite #component_auth_modal { max-width:90vw; }

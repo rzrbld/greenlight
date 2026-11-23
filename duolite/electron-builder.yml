@@ -1,0 +1,17 @@
+appId: io.github.rzrbld.greenlight.duo
+productName: Greenlight Duo
+asar: true
+npmRebuild: false
+compression: normal
+directories:
+  output: ../../duolite/build/electron
+  buildResources: resources
+files:
+  - package.json
+  - app
+linux:
+  executableName: greenlight-duo
+  category: Game
+  target:
+    - target: dir
+      arch: arm64

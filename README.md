@@ -1,3 +1,16 @@
+# Greenlight Duo Lite
+
+A Linux ARM64 adaptation of [Greenlight](https://github.com/unknownskl/greenlight)
+v2.4.2 for the Retroid Pocket Duo Lite running BananaOS. This is an independent
+app installed and updated through Slopetanium; it is not part of the firmware.
+Both Xbox Remote Play and Xbox Cloud Gaming paths are retained.
+
+See [installation, controls and build instructions](duolite/README.md).
+Release ZIPs and corresponding dependency sources are produced by
+[GitHub Actions](https://github.com/rzrbld/greenlight/actions/workflows/duolite.yml).
+
+---
+
 # Greenlight
 
 [![Build/Desktop](https://github.com/unknownskl/greenlight/actions/workflows/build_desktop.yml/badge.svg)](https://github.com/unknownskl/greenlight/actions/workflows/build_desktop.yml)

@@ -42,6 +42,7 @@ export function setUpdateNotification(options: Options = defaultOptions, logger)
 }
 
 export async function checkForUpdates({repository, token, debug, silent, prereleases}: Options = defaultOptions, logger) {
+    if (process.env.GREENLIGHT_DUOLITE === '1') return // Slopetanium owns this package's updates.
     logger.log('updater', __filename+'[checkForUpdates()] Running updater...', electron.app.isPackaged, debug)
     if (!electron.app.isPackaged && !debug){
         logger.log('updater', __filename+'[checkForUpdates()] Not checking for updates because app is not packaged.')
