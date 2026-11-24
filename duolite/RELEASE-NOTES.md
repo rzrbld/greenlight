@@ -1,7 +1,11 @@
-Duo.5 switches the built-in controller to Xbox face-button positions:
+Duo.6 switches the built-in controller to Xbox face-button positions:
 physical B → Xbox A, A → B, Y → X and X → Y, in both menus and streams.
 Physical B now confirms and physical A goes back. Shoulders, triggers, sticks,
-D-pad, View/Menu, Guide and external-controller mappings are unchanged.
+D-pad and external-controller mappings are unchanged.
+
+The built-in Home button quits Greenlight from menus or a stream. Select + Start
+no longer quits: both buttons pass through to Xbox for games that use the chord.
+External controllers retain their Xbox Guide behavior.
 
 The verified Duo.4 streaming configuration is preserved:
 

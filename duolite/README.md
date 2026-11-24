@@ -27,7 +27,9 @@ desktop auto-updater is disabled on this device.
   B sends Xbox A, A sends B, Y sends X and X sends Y. Thus physical B selects
   and physical A goes back in the app menus. This applies to the built-in
   controller in both menus and streams; external controllers keep their mapping.
-- Hold Select + Start for 1.2 seconds to quit.
+- Press the built-in Home button to quit. Select + Start stays available to
+  the Xbox stream and never quits Greenlight. External Guide buttons retain
+  their normal Xbox behavior.
 - Streaming uses Greenlight's existing controller input. The measured Retroid
   controller mapping is normalized inside this app; external standard
   controllers keep their mapping and native rumble interfaces.

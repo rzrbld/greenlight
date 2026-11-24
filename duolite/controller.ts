@@ -3,7 +3,7 @@ import {installDuoGamepadAdapter} from './gamepad'
 // Renderer-only menu navigation. Streaming keeps Greenlight's native gamepad path.
 export function installDuoNavigation(quit: () => void) {
     const restoreGamepads = installDuoGamepadAdapter()
-    let raf = 0, lastDirection = '', nextRepeat = 0, wasA = false, wasB = false, quitSince = 0
+    let raf = 0, lastDirection = '', nextRepeat = 0, wasA = false, wasB = false, wasHome = false
     const visible = () => Array.from(document.querySelectorAll<HTMLElement>('button,a[href],input,select,textarea,[role="button"]'))
         .filter(el => !el.hasAttribute('disabled') && el.getBoundingClientRect().width > 0 && el.getBoundingClientRect().height > 0)
     const focus = (direction: string) => {
@@ -24,10 +24,10 @@ export function installDuoNavigation(quit: () => void) {
         const pad = Array.from(navigator.getGamepads()).find(p => p?.connected)
         if (pad) {
             const down = (i: number) => !!pad.buttons[i]?.pressed
-            if (down(8) && down(9)) {
-                if (!quitSince) quitSince = now
-                if (now-quitSince > 1200) { quit(); quitSince = now+100000 }
-            } else quitSince = 0
+            // Reserve only the handheld Home button; View+Menu belongs to Xbox.
+            const home = /Retroid Pocket Duo Lite|Vendor: 2f24 Product: 0001/i.test(pad.id) && down(16)
+            if (home && !wasHome) quit()
+            wasHome = home
             const streaming = window.location.pathname.includes('/stream/')
             if (!streaming) {
                 const direction = down(12) || pad.axes[1] < -.6 ? 'up' : down(13) || pad.axes[1] > .6 ? 'down' : down(14) || pad.axes[0] < -.6 ? 'left' : down(15) || pad.axes[0] > .6 ? 'right' : ''

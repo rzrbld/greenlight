@@ -25,6 +25,7 @@ jobs:
       - name: Controller and source checks
         run: |
           node --experimental-strip-types duolite/test-gamepad.mjs
+          node duolite/test-controller.mjs
           node --experimental-strip-types duolite/test-stream-resolution.mjs
           python3 -m py_compile duolite/*.py
           bash -n duolite/Greenlight.sh
