@@ -15,6 +15,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 if (process.env.GREENLIGHT_DUOLITE === '1') {
+    ElectronApp.commandLine.appendSwitch('ozone-platform-hint', 'auto')
     const profile = path.join(process.env.XDG_CONFIG_HOME || '/data/home/.config', 'greenlight-duo')
     fs.mkdirSync(profile, {recursive:true})
     ElectronApp.setPath('userData', profile)

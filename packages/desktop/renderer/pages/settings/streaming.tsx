@@ -44,6 +44,12 @@ function SettingsStreaming() {
 
     // video_profiles ([])
 
+    function setStreamResolution(e){
+        const height = Number.parseInt(e.target.value, 10)
+        if (![0, 720, 1080, 1440].includes(height)) return
+        setSettings({ ...settings, stream_resolution: height })
+    }
+
     function setPreferredGameLanguage(e){
         setSettings({
             ...settings,
@@ -87,6 +93,17 @@ function SettingsStreaming() {
                         <label>{t('settings.streaming.xHomeStreamingBitrateLabel')}</label>
                         <input type="range" min="0" max="40960" step="1024" value={settings.xhome_bitrate} onChange={ setxHomeBitrate } />
                 ({ settings.xhome_bitrate === 0 ? t('settings.streaming.unlimitedLabel') : Math.floor(settings.xhome_bitrate / 1024) + ' ' + t('settings.streaming.mbpsLabel') })
+                    </p>
+
+                    <p>
+                        <label>{t('settings.streaming.streamResolutionLabel')}</label>
+                        <select value={settings.stream_resolution} onChange={setStreamResolution}>
+                            <option value={720}>720p</option>
+                            <option value={1080}>1080p</option>
+                            <option value={0}>{t('settings.streaming.setH264ProfileValueAuto')}</option>
+                            <option value={1440}>1440p</option>
+                        </select>
+                        <br /><small>{t('settings.streaming.streamResolutionDescription')}</small>
                     </p>
 
                     <p>

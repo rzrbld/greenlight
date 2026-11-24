@@ -90,6 +90,8 @@
         "description": "xHome і xCloud за замовчуванням не підтримують більше 20 Мбіт/с. Ця настройка не скасовує це обмеження.",
         "xCloudStreamingBitrateLabel": "Бітрейт трансляції xCloud",
         "xHomeStreamingBitrateLabel": "Бітрейт трансляції xHome",
+        "streamResolutionLabel": "Роздільна здатність трансляції",
+        "streamResolutionDescription": "У режимі «Авто» консоль або хмарний сервіс вибирають самі, як і раніше: консоль із роздільною здатністю 1440p або 4K UHD передає 1440p. Для 1440p у xHome встановіть роздільну здатність екрана консолі 1440p або 4K UHD; для xCloud потрібні Game Pass Ultimate і підтримувана гра.",
         "unlimitedLabel": "Без обмежень / Викл.",
         "mbpsLabel": "Мбіт/с",
         "setH264ProfileLabel": "Встановити профіль H.264",

@@ -84,3 +84,18 @@ Based on [unknownskl/greenlight](https://github.com/unknownskl/greenlight),
 stable tag v2.4.2. Upstream MIT attribution is preserved in the repository and
 installed package. The Duo-specific adapter, launcher and packaging live in
 this directory; the original application stays under `packages/desktop`.
+
+## Stream resolution
+
+Settings → Streaming now requests 720p, 1080p, 1440p or Auto. Duo Lite defaults
+to 720p. This sends Xbox's `VideoPreference` and
+`userRequestedResolutionUpdate` control messages and matching client dimensions;
+it does not change the console's TV output or the app's display scaling. The
+bitrate slider remains a separate bandwidth limit. Implementation adapted from
+[upstream PR #1752](https://github.com/unknownskl/greenlight/pull/1752),
+`iu5gal`, head `e4f8b3942e21a8b1a1b2aea1fea6fc63c40cf6c9`.
+
+The isolated Duo test received 1280×720 H.264 after previously receiving 1440p.
+Resolution negotiation is verified separately from acceleration: experimental
+Venus/VA-API tests have shown corrupt frames and GPU-path resets. The production
+launcher is not switched to those unvalidated configurations.

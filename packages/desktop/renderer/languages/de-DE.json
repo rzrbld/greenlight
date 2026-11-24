@@ -85,6 +85,8 @@
         "description": "xHome und xCloud unterstützen standardmäßig nicht mehr als 20 Mbps. Diese Einstellung hebt das Limit nicht auf.",
         "xCloudStreamingBitrateLabel": "xCloud Streamingbitrate",
         "xHomeStreamingBitrateLabel": "xHome Streamingbitrate",
+        "streamResolutionLabel": "Stream-Auflösung",
+        "streamResolutionDescription": "Bei Automatisch wählt die Konsole oder der Cloud-Dienst wie bisher selbst: Eine auf 1440p oder 4K UHD eingestellte Konsole streamt in 1440p. Für 1440p über xHome die Bildschirmauflösung der Konsole auf 1440p oder 4K UHD stellen; für xCloud sind Game Pass Ultimate und ein unterstütztes Spiel nötig.",
         "unlimitedLabel": "Unbegrenzt / Aus",
         "mbpsLabel": "Mbps",
         "setH264ProfileLabel": "Lege H.264-Profil fest",

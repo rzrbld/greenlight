@@ -110,7 +110,11 @@ def main():
                 proc.wait(timeout=4)
             except subprocess.TimeoutExpired:
                 proc.kill()
-                proc.wait()
+                try:
+                    proc.wait(timeout=1)
+                except subprocess.TimeoutExpired:
+                    # A kernel fence wait must not keep the OS launcher blocked.
+                    pass
         for log in logs:
             log.close()
         shutil.rmtree(run, ignore_errors=True)
