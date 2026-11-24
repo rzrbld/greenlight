@@ -1,3 +1,10 @@
+Duo.5 switches the built-in controller to Xbox face-button positions:
+physical B → Xbox A, A → B, Y → X and X → Y, in both menus and streams.
+Physical B now confirms and physical A goes back. Shoulders, triggers, sticks,
+D-pad, View/Menu, Guide and external-controller mappings are unchanged.
+
+The verified Duo.4 streaming configuration is preserved:
+
 Duo.4 defaults to explicit 720p Xbox negotiation and uses native OS Turnip/Vulkan
 rendering through ANGLE. On restored BananaOS Alpha46, the user confirmed clean,
 responsive console streaming: their best result on this handheld so far.
