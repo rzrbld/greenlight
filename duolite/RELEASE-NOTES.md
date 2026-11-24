@@ -1,13 +1,16 @@
-Duo.3 fixes the frozen/black video path by disabling Chromium GPU rendering and
-keeping client buffers in shared memory. Weston retains native Adreno display
-composition. Disabling delegated Wayland overlays in Duo.2 was insufficient.
+Duo.4 defaults to explicit 720p Xbox negotiation and uses native OS Turnip/Vulkan
+rendering through ANGLE. On restored BananaOS Alpha46, the user confirmed clean,
+responsive console streaming: their best result on this handheld so far.
 
-The user confirmed moving console-stream video, audio, controller input and top
-touch with this setup. Playback is still choppy; performance work continues.
-This is a functional bring-up preview, not a claim of smooth streaming or verified
-hardware video decoding. Forced 1× device scaling is not used because it cropped
-the output. Cloud streaming needs separate testing.
+Video decoding stays in software. Experimental Venus hardware decoding is not
+included: it produced corrupted frames and device resets. The successful test
+received 1280×720 H.264 at approximately 60 decoded frames/s. This does not
+establish end-to-end latency or cloud-streaming performance.
 
-Use BananaOS Duo Lite Alpha46 or newer for automatic top-touch initialization.
-Install/update the Linux ARM64 ZIP through Slopetanium; settings and Microsoft
-sign-in stay outside the replaceable app directory.
+Settings → Streaming provides 720p, 1080p, 1440p and Auto requests; bitrate is a
+separate setting. Resolution negotiation adapts upstream PR #1752 by iu5gal.
+The native panel scaling, top touch and controller mapping are preserved.
+
+Use BananaOS Duo Lite Alpha46 with its OS Turnip driver. Install/update the
+Linux ARM64 ZIP through Slopetanium; settings and Microsoft sign-in stay outside
+the replaceable app directory. Public assets are built by GitHub Actions.

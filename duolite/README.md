@@ -34,23 +34,23 @@ desktop auto-updater is disabled on this device.
 
 ## Validation status
 
-On-device startup, inline device-code authentication, 960×540 viewport, native
-Adreno FD610 rendering through ANGLE/GLES, and measured controller button
-normalization have been checked. The initial upside-down display transform
-has been corrected; physical confirmation is still pending.
+Duo.4 uses Electron 42 ARM64 with ANGLE over the OS Turnip/Vulkan driver and
+explicit 720p Xbox negotiation. On restored BananaOS Alpha46, the user confirmed
+clean, responsive video and described it as the best result on this handheld.
+The measured stream was 1280×720 H.264 at approximately 60 decoded frames/s.
+Video decoding is explicitly software; Vulkan accelerates rendering/composition.
+This is not a measurement of button-to-photon latency.
 
-The first two previews could freeze the physical image while decode counters
-continued, then retain GPU buffers and hang during cleanup. Disabling delegated
-overlays alone did not fix the real stream. Duo.3 disables Chromium GPU rendering
-and keeps its buffers in shared memory; Weston still uses native Adreno for final
-display composition. The user confirmed console-stream video, audio, controller
-input and top touch with this setup. Playback remains choppy and performance
-work is ongoing. A forced 1× device scale cropped the output and is not enabled.
+Earlier ANGLE OpenGL paths froze the physical image. Duo.3's CPU-rendering
+fallback worked but was choppy. Experimental Venus hardware decoding produced
+corruption and resets and is excluded from this app configuration. The complete
+original Alpha46 kernel, device tree and root were restored and hash-verified
+before the successful Duo.4 trial. Forced 1× scaling cropped the screen and
+remains disabled. Physical orientation, top touch and controller operation have
+been confirmed by the user.
 
 Cloud streaming, analog trigger behavior and stream rumble still need separate
-account-backed device tests. Hardware video
-decoding is **not verified**: Chromium reports no decoding profiles in the
-current probe. A working GPU renderer does not establish video decode support.
+account-backed device tests.
 
 ## Build
 

@@ -62,7 +62,12 @@ def main():
         'WESTON_MODULE_MAP': ';'.join(name+'='+str(RUNTIME/'modules'/name) for name in ['drm-backend.so','gl-renderer.so','kiosk-shell.so']),
         'LANG': 'C.UTF-8', 'GSETTINGS_BACKEND':'memory',
     })
-    for key in ['DISPLAY', 'EGL_PLATFORM', 'DEBUG']:
+    # Use the OS Turnip ICD; CPU video decode avoids the unstable Venus path.
+    icds = sorted(Path('/usr/share/vulkan/icd.d').glob('freedreno_icd*.json'))
+    if not icds:
+        raise RuntimeError('Greenlight Duo requires the OS Turnip Vulkan driver')
+    env['VK_ICD_FILENAMES'] = env['VK_DRIVER_FILES'] = str(icds[0])
+    for key in ['DISPLAY', 'EGL_PLATFORM', 'DEBUG', 'LIBVA_DRIVER_NAME', 'LIBVA_DRIVERS_PATH']:
         env.pop(key, None)
     fontconfig = run/'fonts.conf'
     fontconfig.write_text('<fontconfig><dir>'+str(RUNTIME/'share/fonts')+'</dir><dir>/usr/share/fonts</dir><cachedir>'+str(CACHE/'fonts')+'</cachedir></fontconfig>')
@@ -95,8 +100,13 @@ def main():
         wait_path(run/'bus', bus)
         compositor = start([RUNTIME/'bin/weston', '--backend=drm-backend.so', '--shell=kiosk-shell.so', '--config='+str(config), '--socket=greenlight-wayland', '--log='+str(CACHE/'weston.log')], 'desktop')
         wait_path(run/'greenlight-wayland', compositor)
-        # Keep Chromium's buffers in shared memory; Weston still uses the OS Adreno renderer.
-        args = [ROOT/'electron/greenlight-duo', '--no-sandbox', '--ozone-platform=wayland', '--use-gl=angle', '--use-angle=gles', '--alsa-output-device=default', '--alsa-input-device=default', '--fullscreen', '--disable-gpu', '--disable-gpu-compositing']
+        # This exact rendering path was verified with a real 720p Xbox stream.
+        args = [ROOT/'electron/greenlight-duo', '--no-sandbox',
+            '--ozone-platform=wayland', '--ozone-platform-hint=auto',
+            '--use-gl=angle', '--use-angle=vulkan',
+            '--enable-features=Vulkan,DefaultANGLEVulkan,VulkanFromANGLE',
+            '--disable-accelerated-video-decode',
+            '--alsa-output-device=default', '--alsa-input-device=default', '--fullscreen']
         if os.environ.get('GREENLIGHT_DUO_DIAGNOSTICS') == '1':
             args += ['--remote-debugging-address=127.0.0.1', '--remote-debugging-port=9225']
         app = start(args, 'app')
